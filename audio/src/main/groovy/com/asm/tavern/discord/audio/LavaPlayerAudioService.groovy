@@ -47,10 +47,10 @@ class LavaPlayerAudioService implements AudioService {
 	}
 
 	@Override
-	void play(TextChannel textChannel, URL url) {
+	void play(TextChannel textChannel, URI uri) {
 		GuildMusicManager musicManager = musicManagers.get(new GuildId(textChannel.getGuild().getId()))
 
-		playerManager.loadItemOrdered(musicManager, url.toString(), new AudioLoadResultHandler() {
+		playerManager.loadItemOrdered(musicManager, uri.toString(), new AudioLoadResultHandler() {
 			@Override
 			void trackLoaded(AudioTrack track) {
 				textChannel.sendMessage("Adding to queue ${track.getInfo().title}").queue()
@@ -73,7 +73,7 @@ class LavaPlayerAudioService implements AudioService {
 
 			@Override
 			void noMatches() {
-				textChannel.sendMessage("Nothing found by ${url}")
+				textChannel.sendMessage("Nothing found by ${uri}")
 			}
 
 			@Override

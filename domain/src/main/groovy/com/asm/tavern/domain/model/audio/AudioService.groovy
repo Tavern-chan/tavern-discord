@@ -15,7 +15,7 @@ interface AudioService {
 
 	VoiceChannelId getCurrentChannel(GuildId guildId)
 
-	void play(TextChannel textChannel, URL url)
+	void play(TextChannel textChannel, URI song)
 
 	void skip(GuildId guildId)
 

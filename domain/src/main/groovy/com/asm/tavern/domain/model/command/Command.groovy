@@ -44,8 +44,18 @@ class Command {
 			this
 		}
 
+		Builder add(Builder subCommand) {
+			this.subCommands += subCommand.build()
+			this
+		}
+
 		Builder add(CommandArgumentUsage commandArgumentUsage) {
 			this.argumentUsages += commandArgumentUsage
+			this
+		}
+
+		Builder add(CommandArgumentUsage.Builder commandArgumentUsage) {
+			this.argumentUsages += commandArgumentUsage.build()
 			this
 		}
 

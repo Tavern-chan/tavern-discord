@@ -1,15 +1,9 @@
 package com.asm.tavern.domain.model
 
-/**
- * Common class for a string based object identifier
- */
-abstract class Identifier {
-	private String id
+class IdentifiedDomainObject<Id extends Identifier> {
+	private Id id
 
-	protected Identifier() {
-	}
-
-	protected Identifier(String id) {
+	IdentifiedDomainObject(Id id) {
 		this.id = id
 	}
 
@@ -17,7 +11,7 @@ abstract class Identifier {
 		if (this.is(o)) return true
 		if (getClass() != o.class) return false
 
-		Identifier that = (Identifier) o
+		IdentifiedDomainObject that = (IdentifiedDomainObject) o
 
 		if (id != that.id) return false
 
@@ -28,17 +22,16 @@ abstract class Identifier {
 		return (id != null ? id.hashCode() : 0)
 	}
 
-	@Override
-	String toString() {
-		getId()
-	}
-
-	String getId() {
+	Id getId() {
 		return id
 	}
 
-	private void setId(String id) {
+	void setId(Id id) {
 		this.id = id
 	}
 
+	@Override
+	String toString() {
+		return "${getClass()}{id=${id}}"
+	}
 }

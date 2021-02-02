@@ -11,4 +11,5 @@ rootProject.name = 'tavern-discord'
 include('app', 'discord', 'utilities')
 include 'domain'
 include 'audio'
+include 'repository'
 

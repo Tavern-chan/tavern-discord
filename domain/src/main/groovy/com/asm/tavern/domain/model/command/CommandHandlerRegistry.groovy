@@ -13,7 +13,7 @@ class CommandHandlerRegistry {
 	}
 
 	CommandHandler getHandler(CommandMessage message) {
-		handlers.get(message.commandList.first().name).stream()
+		handlers.get(message.commandList.last().name).stream()
 				.filter(handler -> handler.supportsUsage(message.usage))
 				.findFirst().orElse(null)
 	}

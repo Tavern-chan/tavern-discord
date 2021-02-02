@@ -1,5 +1,7 @@
 package com.asm.tavern.domain.model.command
 
+import groovy.transform.Immutable
+
 
 /**
  * Possible arg combinations to use with a command
@@ -8,16 +10,11 @@ package com.asm.tavern.domain.model.command
  * $roll 6
  * $roll 1 6
  */
+@Immutable
 class CommandArgumentUsage {
-	final String name
-	final String description
-	final List<CommandArgument> args
-
-	CommandArgumentUsage(String name, String description, List<CommandArgument> args) {
-		this.name = name
-		this.description = description
-		this.args = args
-	}
+	String name
+	String description
+	List<CommandArgument> args
 
 	static Builder builder(String name, String description) {
 		new Builder(name, description)
@@ -35,6 +32,11 @@ class CommandArgumentUsage {
 
 		Builder add(CommandArgument argument) {
 			this.args += argument
+			this
+		}
+
+		Builder add(CommandArgument.Builder argument) {
+			this.args += argument.build()
 			this
 		}
 

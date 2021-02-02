@@ -8,6 +8,7 @@ import com.asm.tavern.domain.model.command.CommandMessage
 import com.asm.tavern.domain.model.command.CommandResult
 import com.asm.tavern.domain.model.command.CommandResultBuilder
 import com.asm.tavern.domain.model.help.CommandIniPrinter
+import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 
 import javax.annotation.Nonnull

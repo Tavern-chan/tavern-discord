@@ -29,14 +29,11 @@ class PlayCommandHandler implements CommandHandler {
 
 	@Override
 	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
-		try {
-			URL url = new URL(message.args.first())
+		String songId = message.args.first()
+		DomainRegistry.songService().songFromString(songId).ifPresentOrElse(song -> {
 			DomainRegistry.audioService().join(event.getMember().getVoiceState(), event.getGuild().getAudioManager())
-			DomainRegistry.audioService().play(event.getChannel(), url)
-		} catch (MalformedURLException ex) {
-			logger.error('Invalid URL in play command')
-			logger.catching(ex)
-		}
+			DomainRegistry.audioService().play(event.getChannel(), song.uri)
+		}, () -> event.getChannel().sendMessage("Unable to find song ${songId}"))
 		new CommandResultBuilder().success().build()
 	}
 

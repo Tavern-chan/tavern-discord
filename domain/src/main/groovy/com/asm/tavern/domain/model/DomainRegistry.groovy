@@ -1,6 +1,7 @@
 package com.asm.tavern.domain.model
 
 import com.asm.tavern.domain.model.audio.AudioService
+import com.asm.tavern.domain.model.audio.SongService
 import com.asm.tavern.domain.model.comrade.ComradeService
 import com.asm.tavern.domain.model.roll.RollService
 import org.springframework.beans.BeansException
@@ -20,6 +21,10 @@ class DomainRegistry implements ApplicationContextAware {
 
 	static ComradeService comradeService() {
 		context.getBean(ComradeService.class)
+	}
+
+	static SongService songService() {
+		context.getBean(SongService.class)
 	}
 
 	@Override
