@@ -8,7 +8,7 @@ class CommandArgument {
 	CommandArgument(String name, String description, String example) {
 		this.name = name
 		this.description = description
-		this.example
+		this.example = example
 	}
 
 	static Builder builder(String name, String description) {

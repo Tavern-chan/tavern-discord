@@ -29,7 +29,7 @@ class RemoveSongCommandHandler implements CommandHandler {
 	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
 		String id = message.args[0]
 		songService.remove(new SongId(id))
-		event.getChannel().sendMessage("Removed song ${id}")
+		event.getChannel().sendMessage("Removed song ${id}").queue()
 		new CommandResultBuilder().success().build()
 	}
 }

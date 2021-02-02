@@ -11,9 +11,13 @@ import static com.asm.tavern.domain.model.command.CommandFactory.*
 
 class TavernCommands {
 
+	static class Roles {
+		static final String DJ = "DJ"
+	}
+
 	static class Tags {
-		static final GENERAL = 'General'
-		static final MUSIC = 'Music'
+		static final String GENERAL = 'General'
+		static final String MUSIC = 'Music'
 	}
 
 	static class HelpUsages {
@@ -138,11 +142,15 @@ class TavernCommands {
 	static class SongSubCommands {
 		static final Command ADD = command('add', 'Register a new song').add(usage('add', 'Register a new song')
 				.add(argument('id', 'The id to register the song as').example('chuchu'))
-				.add(argument('url', 'The url of the song to register').example('https://www.youtube.com/watch?v=5d32-RnUlAA'))).build()
+				.add(argument('url', 'The url of the song to register').example('https://www.youtube.com/watch?v=5d32-RnUlAA'))
+				.requireRole(Roles.DJ))
+				.build()
 
 		static final Command REMOVE = command('remove', 'Remove a registered song')
 				.add(usage('remove', 'Remove a registered song')
-						.add(argument('id', 'The id of the song to remove').example('gooba2'))).build()
+				.add(argument('id', 'The id of the song to remove').example('gooba2'))
+				.requireRole(Roles.DJ))
+				.build()
 	}
 
 	static final Command SONGS = command('songs', 'Commands for registered songs')

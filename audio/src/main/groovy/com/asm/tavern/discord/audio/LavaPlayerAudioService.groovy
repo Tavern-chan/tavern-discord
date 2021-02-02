@@ -15,10 +15,13 @@ import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.GuildVoiceState
 import net.dv8tion.jda.api.entities.TextChannel
 import net.dv8tion.jda.api.managers.AudioManager
+import org.slf4j.ext.XLogger
+import org.slf4j.ext.XLoggerFactory
 
 import java.util.stream.Collectors
 
 class LavaPlayerAudioService implements AudioService {
+	private static final XLogger logger = XLoggerFactory.getXLogger(LavaPlayerAudioService.class)
 	private final AudioPlayerManager playerManager = new DefaultAudioPlayerManager()
 	private final Map<GuildId, GuildMusicManager> musicManagers = new HashMap<>()
 
@@ -66,9 +69,17 @@ class LavaPlayerAudioService implements AudioService {
 					firstTrack = playlist.getTracks().first()
 				}
 
-				textChannel.sendMessage("Adding to queue ${firstTrack.getInfo().title} (first track of playlist ${playlist.name})").queue()
+				int currentIndex = playlist.getTracks().indexOf(firstTrack)
+				if (currentIndex == -1) {
+					logger.warn("Could not find track index, starting from the top")
+					currentIndex = 0
+				}
 
-				scheduleTrack(musicManager, firstTrack)
+				for (int i = currentIndex; i < playlist.tracks.size(); i++) {
+					scheduleTrack(musicManager, playlist.tracks[i])
+				}
+
+				textChannel.sendMessage("Adding playlist ${playlist.name} to queue. Starting with the track ${playlist.tracks[currentIndex].info.title}").queue()
 			}
 
 			@Override

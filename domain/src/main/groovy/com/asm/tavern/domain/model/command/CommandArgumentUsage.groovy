@@ -1,6 +1,8 @@
 package com.asm.tavern.domain.model.command
 
 import groovy.transform.Immutable
+import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.api.entities.Role
 
 
 /**
@@ -15,6 +17,11 @@ class CommandArgumentUsage {
 	String name
 	String description
 	List<CommandArgument> args
+	String requiredRole
+
+	boolean canUse(Member member) {
+		null == requiredRole || null != member.roles.find { role -> role.name == requiredRole }
+	}
 
 	static Builder builder(String name, String description) {
 		new Builder(name, description)
@@ -24,6 +31,7 @@ class CommandArgumentUsage {
 		final String name
 		final String description
 		List<CommandArgument> args = []
+		String requiredRole
 
 		Builder(String name, String description) {
 			this.name = name
@@ -40,8 +48,13 @@ class CommandArgumentUsage {
 			this
 		}
 
+		Builder requireRole(String requiredRole) {
+			this.requiredRole = requiredRole
+			this
+		}
+
 		CommandArgumentUsage build() {
-			new CommandArgumentUsage(name, description, args)
+			new CommandArgumentUsage(name, description, args, requiredRole)
 		}
 	}
 }

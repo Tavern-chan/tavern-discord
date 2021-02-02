@@ -35,7 +35,14 @@ class DiscordListener extends ListenerAdapter {
 	void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
 		String message = event.getMessage().getContentRaw().trim()
 		CommandMessage result = parser.parse(message)
+
 		if (!result.commandList.isEmpty()) {
+			if (!result.usage.canUse(event.getMember())) {
+				event.getChannel().sendMessage("You do not have permissions for this command").queue()
+				logger.debug("${event.getMember().getEffectiveName()} cannot use the command usage ${result.commandList.last().name} - ${result.usage.name}")
+				return
+			}
+
 			CommandHandler handler = commandHandlerRegistry.getHandler(result)
 			if (handler) {
 				handler.handle(event, result)

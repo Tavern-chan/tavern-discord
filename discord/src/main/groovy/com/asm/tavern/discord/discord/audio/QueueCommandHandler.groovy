@@ -36,10 +36,10 @@ class QueueCommandHandler implements CommandHandler {
 		List<AudioTrackInfo> queue = audioService.getQueue(new GuildId(event.getGuild().getId()))
 		logger.debug("The queue has ${queue.size()} tracks")
 		if (!queue.isEmpty()) {
+			int songIndex = 1
 			queue.stream()
 					.collect(StreamChunkCollector.take(10)).forEach({ tracks ->
 				StringBuilder builder = new StringBuilder()
-				int songIndex = 1
 				tracks.forEach({ track -> builder.append("${songIndex++}. ")
 						.append(track.title)
 						.append(" - ")
