@@ -21,6 +21,8 @@ interface AudioService {
 
 	void stop(GuildId guildId)
 
+	void clear(GuildId guildId)
+
 	void pause(GuildId guildId)
 
 	void unpause(GuildId guildId)

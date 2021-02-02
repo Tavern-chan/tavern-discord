@@ -1,6 +1,6 @@
 package com.asm.tavern.domain.model
 
-import com.asm.tavern.discord.utilities.DiscordUtils
+
 import com.asm.tavern.domain.model.command.Command
 import com.asm.tavern.domain.model.command.CommandArgumentUsage
 
@@ -101,6 +101,11 @@ class TavernCommands {
 			.build()
 
 	static final Command STOP = command('stop', 'Stop and clear the music queue')
+			.tag(Tags.MUSIC)
+			.add(usage('default', 'Default'))
+			.build()
+
+	static final Command CLEAR = command('clear', 'Clear the music queue')
 			.tag(Tags.MUSIC)
 			.add(usage('default', 'Default'))
 			.build()

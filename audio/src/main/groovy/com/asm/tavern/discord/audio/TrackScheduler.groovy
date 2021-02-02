@@ -44,8 +44,12 @@ class TrackScheduler extends AudioEventAdapter {
 	}
 
 	void stopAndClear() {
-		queue.clear()
+		clear()
 		player.stopTrack()
+	}
+
+	void clear() {
+		queue.clear()
 	}
 
 	void pause() {

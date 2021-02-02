@@ -118,6 +118,14 @@ class LavaPlayerAudioService implements AudioService {
 	}
 
 	@Override
+	void clear(GuildId guildId) {
+		GuildMusicManager manager = musicManagers.get(guildId)
+		if (null != manager) {
+			manager.getScheduler().clear()
+		}
+	}
+
+	@Override
 	void pause(GuildId guildId) {
 		GuildMusicManager manager = musicManagers.get(guildId)
 		if (null != manager) {

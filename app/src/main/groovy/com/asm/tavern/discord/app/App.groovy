@@ -61,6 +61,8 @@ class App {
 				.add(new SongsCommandHandler(applicationContext.getBean(SongService.class)))
 				.add(new AddSongCommandHandler(applicationContext.getBean(SongService.class)))
 				.add(new RemoveSongCommandHandler(applicationContext.getBean(SongService.class)))
+				.add(new QueueCommandHandler(applicationContext.getBean(AudioService.class)))
+				.add(new ClearCommandHandler(applicationContext.getBean(AudioService.class)))
 		).start()
     }
 }
