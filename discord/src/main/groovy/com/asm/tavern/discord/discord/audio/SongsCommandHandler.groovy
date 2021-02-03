@@ -3,6 +3,7 @@ package com.asm.tavern.discord.discord.audio
 import com.asm.tavern.discord.utilities.DiscordUtils
 import com.asm.tavern.discord.utilities.stream.StreamChunkCollector
 import com.asm.tavern.domain.model.TavernCommands
+import com.asm.tavern.domain.model.audio.Song
 import com.asm.tavern.domain.model.audio.SongService
 import com.asm.tavern.domain.model.command.*
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
@@ -30,6 +31,7 @@ class SongsCommandHandler implements CommandHandler {
 	@Override
 	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
 		StreamSupport.stream(songService.getSongRegistry().getAll().spliterator(), false)
+				.sorted(Comparator.comparing((Song song) -> song.id.id))
 				.collect(StreamChunkCollector.take(10))
 				.forEach({ songs ->
 					StringBuilder builder = new StringBuilder()

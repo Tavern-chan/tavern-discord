@@ -37,7 +37,9 @@ class QueueCommandHandler implements CommandHandler {
 		logger.debug("The queue has ${queue.size()} tracks")
 		if (!queue.isEmpty()) {
 			int songIndex = 1
+			int maxOutput = 20
 			queue.stream()
+					.limit(maxOutput)
 					.collect(StreamChunkCollector.take(10)).forEach({ tracks ->
 				StringBuilder builder = new StringBuilder()
 				tracks.forEach({ track -> builder.append("${songIndex++}. ")
@@ -48,6 +50,9 @@ class QueueCommandHandler implements CommandHandler {
 				})
 				event.getChannel().sendMessage(builder.toString()).queue()
 			})
+			if (queue.size() > maxOutput) {
+				event.getChannel().sendMessage("+${queue.size() - maxOutput} more").queue()
+			}
 		}
 		new CommandResultBuilder().success().build()
 	}

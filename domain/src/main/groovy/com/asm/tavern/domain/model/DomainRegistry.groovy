@@ -2,7 +2,7 @@ package com.asm.tavern.domain.model
 
 import com.asm.tavern.domain.model.audio.AudioService
 import com.asm.tavern.domain.model.audio.SongService
-import com.asm.tavern.domain.model.comrade.ComradeService
+import com.asm.tavern.domain.model.drinks.DrinkService
 import com.asm.tavern.domain.model.roll.RollService
 import org.springframework.beans.BeansException
 import org.springframework.context.ApplicationContext
@@ -19,8 +19,8 @@ class DomainRegistry implements ApplicationContextAware {
 		context.getBean(AudioService.class)
 	}
 
-	static ComradeService comradeService() {
-		context.getBean(ComradeService.class)
+	static DrinkService drinkService() {
+		context.getBean(DrinkService.class)
 	}
 
 	static SongService songService() {

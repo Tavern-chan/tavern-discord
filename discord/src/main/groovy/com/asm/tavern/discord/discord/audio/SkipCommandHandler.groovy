@@ -27,7 +27,8 @@ class SkipCommandHandler implements CommandHandler {
 
 	@Override
 	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
-		DomainRegistry.audioService().skip(new GuildId(event.getGuild().getId()))
+		int skipAmount = message.args[0] ? Integer.parseInt(message.args[0]) : 1
+		DomainRegistry.audioService().skip(new GuildId(event.getGuild().getId()), skipAmount)
 		new CommandResultBuilder().success().build()
 	}
 

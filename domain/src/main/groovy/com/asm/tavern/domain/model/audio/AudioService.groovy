@@ -17,7 +17,7 @@ interface AudioService {
 
 	void play(TextChannel textChannel, URI song)
 
-	void skip(GuildId guildId)
+	void skip(GuildId guildId, int amount)
 
 	void stop(GuildId guildId)
 

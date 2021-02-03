@@ -18,6 +18,7 @@ class TavernCommands {
 	static class Tags {
 		static final String GENERAL = 'General'
 		static final String MUSIC = 'Music'
+		static final String DRINKING = 'Drinking'
 	}
 
 	static class HelpUsages {
@@ -78,16 +79,6 @@ class TavernCommands {
 			})
 			.build()
 
-	static final Command COMRADE = command('comrade', 'COMRADES!')
-			.tag(Tags.GENERAL)
-			.add(usage('default', 'Comrade mode'))
-			.build()
-
-	static final Command UNCOMRADE = command('uncomrade', '...')
-			.tag(Tags.GENERAL)
-			.add(usage('default', 'Turn off comrade mode'))
-			.build()
-
 	static final Command PLAY = command('play', 'Play a song')
 			.tag(Tags.MUSIC)
 			.add(usage('song', 'Play a song given the url')
@@ -117,6 +108,7 @@ class TavernCommands {
 	static final Command SKIP = command('skip', 'Skip the current track')
 			.tag(Tags.MUSIC)
 			.add(usage('default', 'Default'))
+			.add(usage('skip amount', 'Skip an amount of songs').add(argument('amount', 'The amount of songs to skip').example('5')))
 			.build()
 
 	static final Command PAUSE = command('pause', 'Pause the music')
@@ -158,6 +150,31 @@ class TavernCommands {
 			.add(usage('default', 'List songs'))
 			.add(SongSubCommands.ADD)
 			.add(SongSubCommands.REMOVE)
+			.build()
+
+	static final Command COMRADE = command('comrade', 'COMRADES!')
+			.tag(Tags.GENERAL)
+			.add(usage('default', 'Comrade mode'))
+			.build()
+
+	static final Command UNCOMRADE = command('uncomrade', '...')
+			.tag(Tags.GENERAL)
+			.add(usage('default', 'Turn off comrade mode'))
+			.build()
+
+	static final Command DRINK = command('drink', 'Take some drinks')
+			.tag(Tags.DRINKING)
+			.add(usage('drink', 'Take 1-5 drinks'))
+			.build()
+
+	static final Command POPPOP = command('poppop', 'Pop pop!')
+			.tag(Tags.DRINKING)
+			.add(usage('poppop', 'Everyone takes 0-4 drinks'))
+			.build()
+
+	static final Command DRINKS = command('drinks', 'Drink totals')
+			.tag(Tags.DRINKING)
+			.add(usage('drinks', 'List total drinks for users in the voice channel'))
 			.build()
 
 	static List<Command> getCommands() {

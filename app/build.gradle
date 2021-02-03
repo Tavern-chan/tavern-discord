@@ -15,6 +15,7 @@ dependencies {
     implementation project(':domain')
     implementation project(':audio')
     implementation project(':repository')
+    implementation project(':drinks')
 }
 
 application {

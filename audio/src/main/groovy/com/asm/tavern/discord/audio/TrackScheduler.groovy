@@ -43,6 +43,13 @@ class TrackScheduler extends AudioEventAdapter {
 		player.startTrack(queue.poll(), false)
 	}
 
+	void skip(int amount) {
+		// TODO: this seems like a dumb implementation
+		// Remove one less than the amount since the first is the current song
+		(1..<amount).forEach({ _ -> queue.poll()})
+		nextTrack()
+	}
+
 	void stopAndClear() {
 		clear()
 		player.stopTrack()

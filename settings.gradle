@@ -12,4 +12,5 @@ include('app', 'discord', 'utilities')
 include 'domain'
 include 'audio'
 include 'repository'
+include 'drinks'
 
