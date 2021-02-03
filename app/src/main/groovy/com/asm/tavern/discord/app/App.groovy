@@ -35,19 +35,26 @@ class App {
 	private static final String PREFIX = '$'
 
     static void main(String[] args) {
-		String token = args[0]
-		String configLocation = args[1]
+		logger.info("Starting up")
+		String appConfigLocation = './tavern-discord.properties'
+		if (args) {
+			appConfigLocation = args[0]
+		}
+		logger.info("Reading configuration file at ${appConfigLocation}")
+		Properties properties = new Properties()
+		properties.load(new FileInputStream(new File(appConfigLocation)))
+		AppConfig appConfig = new AppConfig(properties)
 
 		logger.info("Initializing Discord API")
 		CommandHandlerRegistry commandHandlerRegistry = new CommandHandlerRegistry()
-		Discord discord = new Discord(token, PREFIX, TavernCommands.getCommands(), commandHandlerRegistry)
+		Discord discord = new Discord(appConfig.getDiscordToken(), PREFIX, TavernCommands.getCommands(), commandHandlerRegistry)
 
 		logger.info("Initializing application context")
 		GenericApplicationContext applicationContext = new GenericApplicationContext()
 		applicationContext.registerBean(Discord.class, () -> discord)
 		applicationContext.registerBean(RollService.class, RollService::new)
 		applicationContext.registerBean(AudioService.class, LavaPlayerAudioService::new)
-		applicationContext.registerBean(SongRepository.class, () -> new FileSongRepository(new File(configLocation)))
+		applicationContext.registerBean(SongRepository.class, () -> new FileSongRepository(appConfig.getSongFile()))
 		applicationContext.registerBean(SongService.class, () -> new SongService(applicationContext.getBean(SongRepository.class)))
 		applicationContext.registerBean(ComradeService.class, LocalComradeService::new)
 		applicationContext.registerBean(DrinkRepository.class, LocalDrinkRepository::new)
