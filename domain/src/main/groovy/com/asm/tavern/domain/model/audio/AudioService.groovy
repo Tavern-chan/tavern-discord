@@ -29,6 +29,6 @@ interface AudioService {
 
 	List<AudioTrackInfo> getQueue(GuildId guildId)
 
-	AudioTrackInfo getNowPlaying(GuildId guildId)
+	ActiveAudioTrack getNowPlaying(GuildId guildId)
 
 }

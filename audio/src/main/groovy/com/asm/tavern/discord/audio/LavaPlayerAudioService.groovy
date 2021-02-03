@@ -1,5 +1,6 @@
 package com.asm.tavern.discord.audio
 
+import com.asm.tavern.domain.model.audio.ActiveAudioTrack
 import com.asm.tavern.domain.model.audio.AudioService
 import com.asm.tavern.domain.model.audio.AudioTrackInfo
 import com.asm.tavern.domain.model.discord.GuildId
@@ -160,12 +161,11 @@ class LavaPlayerAudioService implements AudioService {
 	}
 
 	@Override
-	AudioTrackInfo getNowPlaying(GuildId guildId) {
-		(AudioTrackInfo) Optional.ofNullable(musicManagers.get(guildId))
+	ActiveAudioTrack getNowPlaying(GuildId guildId) {
+		(ActiveAudioTrack) Optional.ofNullable(musicManagers.get(guildId))
 				.map(GuildMusicManager::getScheduler)
 				.map(TrackScheduler::getNowPlaying)
-				.map(AudioTrack::getInfo)
-				.map(AudioTrackInfoAdapter::new)
+				.map(ActiveAudioTrackAdapter::new)
 				.orElse(null)
 	}
 }
