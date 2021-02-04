@@ -14,6 +14,11 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import javax.annotation.Nonnull
 
 class HelpHandler implements CommandHandler {
+	private String prefix
+
+	HelpHandler(String prefix) {
+		this.prefix = prefix
+	}
 
 	@Override
 	Command getCommand() {
@@ -22,12 +27,12 @@ class HelpHandler implements CommandHandler {
 
 	@Override
 	boolean supportsUsage(CommandArgumentUsage usage) {
-		TavernCommands.HELP.argumentUsages[0]
+		TavernCommands.HelpUsages.DEFAULT == usage
 	}
 
 	@Override
 	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
-		event.getChannel().sendMessage(new CommandIniPrinter().print(TavernCommands.getCommands())).queue()
+		event.getChannel().sendMessage(new CommandIniPrinter().print(prefix, TavernCommands.getCommands())).queue()
 		return new CommandResultBuilder().success().build()
 	}
 

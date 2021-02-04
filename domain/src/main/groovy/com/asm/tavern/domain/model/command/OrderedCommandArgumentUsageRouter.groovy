@@ -12,7 +12,7 @@ class OrderedCommandArgumentUsageRouter
 	@Nullable
 	CommandArgumentUsage route(List<CommandArgumentUsage> usages, List<String> args) {
 		for (CommandArgumentUsage usage: usages) {
-			if (usage.args.size() == args.size()) {
+			if (usage.args.size() == args.size() || usage.varArgs) {
 				return usage
 			}
 		}

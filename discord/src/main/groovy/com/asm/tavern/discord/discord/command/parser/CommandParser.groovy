@@ -21,6 +21,31 @@ class CommandParser {
 		commands.stream().collect(Collectors.toMap((Command command) -> command.name.toLowerCase(), ObjectUtils::identity))
 	}
 
+	/**
+	 * Parse just the command without arguments or a usage
+	 * @param message the message
+	 * @return the command message without a usage or arguments
+	 */
+	CommandMessage getCommandFromMessage(String message) {
+		if (!message.trim().startsWith(prefix)) {
+			return commandNotFoundResult(message)
+		}
+
+		// Create command token stack
+		CommandTokenizer tokenizer = new CommandTokenizer(message)
+		if (!tokenizer.hasNext()) {
+			return commandNotFoundResult(message)
+		}
+
+		// Get command and sub-commands
+		List<Command> commandList = locateCommand(commandMap, tokenizer)
+		if (!commandList) {
+			return commandNotFoundResult(message)
+		}
+
+		new CommandMessage(commandList, null, null, message)
+	}
+
 	CommandMessage parse(String message) {
 		if (!message.trim().startsWith(prefix)) {
 			return commandNotFoundResult(message)

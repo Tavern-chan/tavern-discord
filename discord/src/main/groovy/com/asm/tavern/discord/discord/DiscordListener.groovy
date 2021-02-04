@@ -2,7 +2,6 @@ package com.asm.tavern.discord.discord
 
 import com.asm.tavern.discord.discord.command.parser.CommandParser
 import com.asm.tavern.domain.model.DomainRegistry
-import com.asm.tavern.domain.model.command.Command
 import com.asm.tavern.domain.model.command.CommandHandler
 import com.asm.tavern.domain.model.command.CommandHandlerRegistry
 import com.asm.tavern.domain.model.command.CommandMessage
@@ -19,16 +18,12 @@ import javax.annotation.Nonnull
 class DiscordListener extends ListenerAdapter {
 	private static final XLogger logger = XLoggerFactory.getXLogger(DiscordListener.class)
 
-	final String prefix
-	final List<Command> commands
 	final CommandHandlerRegistry commandHandlerRegistry
 	final CommandParser parser
 
-	DiscordListener(String prefix, List<Command> commands, CommandHandlerRegistry commandHandlerRegistry) {
-		this.prefix = prefix
-		this.commands = commands
-		parser = new CommandParser(prefix, commands)
+	DiscordListener(CommandParser parser, CommandHandlerRegistry commandHandlerRegistry) {
 		this.commandHandlerRegistry = commandHandlerRegistry
+		this.parser = parser
 	}
 
 	@Override
@@ -45,11 +40,13 @@ class DiscordListener extends ListenerAdapter {
 
 			CommandHandler handler = commandHandlerRegistry.getHandler(result)
 			if (handler) {
-				handler.handle(event, result)
+				if (!handler.handle(event, result)) {
+					logger.error("Failed to handle command ${parser.prefix}${result.getCommandString()}")
+				}
 			} else {
 				logger.warn("No handler for command {} with usage {}", result.commandList.last().name, result.usage.name)
 			}
-		} else if (message.startsWith(prefix)) {
+		} else if (message.startsWith(parser.prefix)) {
 			logger.debug("No command for message '{}'", message)
 		}
 	}

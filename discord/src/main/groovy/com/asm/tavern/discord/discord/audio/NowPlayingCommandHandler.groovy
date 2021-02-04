@@ -1,8 +1,9 @@
 package com.asm.tavern.discord.discord.audio
 
-import com.asm.tavern.domain.model.DomainRegistry
+
 import com.asm.tavern.domain.model.TavernCommands
 import com.asm.tavern.domain.model.audio.ActiveAudioTrack
+import com.asm.tavern.domain.model.audio.AudioService
 import com.asm.tavern.domain.model.command.*
 import com.asm.tavern.domain.model.discord.GuildId
 import net.dv8tion.jda.api.entities.EmbedType
@@ -14,6 +15,11 @@ import java.time.Duration
 import java.util.function.Function
 
 class NowPlayingCommandHandler implements CommandHandler {
+	private AudioService audioService
+
+	NowPlayingCommandHandler(AudioService audioService) {
+		this.audioService = audioService
+	}
 
 	@Override
 	Command getCommand() {
@@ -27,7 +33,7 @@ class NowPlayingCommandHandler implements CommandHandler {
 
 	@Override
 	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
-		ActiveAudioTrack track = DomainRegistry.audioService().getNowPlaying(new GuildId(event.getGuild().getId()))
+		ActiveAudioTrack track = audioService.getNowPlaying(new GuildId(event.getGuild().getId()))
 
 		Function<Duration, String> formatTime = (Duration duration) -> {
 			String.format("%d:%2d", (duration.getSeconds()/60).intValue(), (duration.getSeconds()%60).intValue()).replace(" ", "0")

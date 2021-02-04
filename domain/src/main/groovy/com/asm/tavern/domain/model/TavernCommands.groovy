@@ -23,8 +23,10 @@ class TavernCommands {
 
 	static class HelpUsages {
 		static final CommandArgumentUsage DEFAULT = usage('default', 'Display the help menu').build()
-		static final CommandArgumentUsage COMMAND_HELP = usage('command', 'Get help with a command')
-				.add(argument('command', 'The command to get help with').example('roll'))
+		static final CommandArgumentUsage COMMAND_HELP = usage('command', 'Get help with a command or sub command')
+				.varArgs()
+				.add(argument('command', 'The command to get help with').example('songs'))
+				.add(argument('subCommand', 'One or more sub commands').example('add'))
 				.build()
 
 	}
@@ -81,54 +83,54 @@ class TavernCommands {
 
 	static final Command PLAY = command('play', 'Play a song')
 			.tag(Tags.MUSIC)
-			.add(usage('song', 'Play a song given the url')
+			.add(usage('song', 'Play a song')
 					.add(argument('song', 'the youtube url or song id').example("https://www.youtube.com/watch?v=dQw4w9WgXcQ")))
 			.build()
 
 	static final Command NOW_PLAYING = command('np', 'Get the current playing track')
 			.tag(Tags.MUSIC)
-			.add(usage('default', 'Default'))
+			.add(usage('default', 'Get the current playing track'))
 			.build()
 
 	static final Command QUEUE = command('queue', 'Get the queue of music')
 			.tag(Tags.MUSIC)
-			.add(usage('default', 'Default'))
+			.add(usage('default', 'Get the queue of music'))
 			.build()
 
 	static final Command STOP = command('stop', 'Stop and clear the music queue')
 			.tag(Tags.MUSIC)
-			.add(usage('default', 'Default'))
+			.add(usage('default', 'Stop and clear the music queue'))
 			.build()
 
 	static final Command CLEAR = command('clear', 'Clear the music queue')
 			.tag(Tags.MUSIC)
-			.add(usage('default', 'Default'))
+			.add(usage('default', 'Clear the music queue'))
 			.build()
 
 	static final Command SKIP = command('skip', 'Skip the current track')
 			.tag(Tags.MUSIC)
-			.add(usage('default', 'Default'))
+			.add(usage('default', 'Skip the current track'))
 			.add(usage('skip amount', 'Skip an amount of songs').add(argument('amount', 'The amount of songs to skip').example('5')))
 			.build()
 
 	static final Command PAUSE = command('pause', 'Pause the music')
 			.tag(Tags.MUSIC)
-			.add(usage('default', 'Default'))
+			.add(usage('default', 'Pause the music'))
 			.build()
 
-	static final Command UNPAUSE = command('unpause', 'Unpause the music')
+	static final Command UNPAUSE = command('unpause', 'Resume the music')
 			.tag(Tags.MUSIC)
-			.add(usage('default', 'Default'))
+			.add(usage('default', 'Resume the music'))
 			.build()
 
 	static final Command JOIN = command('join', 'Join the voice chat lobby')
 			.tag(Tags.MUSIC)
-			.add(usage('default', 'Default'))
+			.add(usage('default', 'Join the voice chat lobby'))
 			.build()
 
 	static final Command LEAVE = command('leave', 'Leave the voice chat lobby')
 			.tag(Tags.MUSIC)
-			.add(usage('default', 'Default'))
+			.add(usage('default', 'Leave the voice chat lobby'))
 			.build()
 
 	static class SongSubCommands {

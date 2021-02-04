@@ -7,7 +7,7 @@ import java.util.stream.Collectors
 
 class CommandIniPrinter {
 
-	String print(List<Command> commands) {
+	String print(String prefix, List<Command> commands) {
 		Map<String, List<Command>> tagToCommandMap = commands.stream().collect(Collectors.toMap(Command::getTag, command -> [command], {c1, c2 -> Streams.concat(c1.stream(), c2.stream()).collect(Collectors.toList())}))
 		StringBuilder message = new StringBuilder()
 
@@ -21,6 +21,7 @@ class CommandIniPrinter {
 			value.forEach({command -> message.append("\t${command.name} - ${command.description}\n")})
 			message.append("\n")
 		})
+		message.append("\nUse ${prefix}help <command> to get help with a command\n")
 		message.append("```\n").toString()
 	}
 
