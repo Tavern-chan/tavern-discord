@@ -32,15 +32,18 @@ class PopPopCommandHandler implements CommandHandler {
 	@Override
 	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
 		DiscordUtils.getUsersVoiceChannel(event.getJDA(), event.getAuthor().id)
-				.ifPresent(channel -> {
+				.map(channel -> {
 					List<MemberDrinkResult> results = drinkService.popPop(channel.members)
 					if (results[0].shot) {
 						event.getChannel().sendMessage("Pop Pop!\nSucks to suck. Everyone take a shot!").queue()
 					} else {
 						event.getChannel().sendMessage("Pop Pop!\n" + String.join("\n", results.stream().map(result -> "${new Mention(result.member.id)} take ${result.drinks} drinks!").collect(Collectors.toList()))).queue()
 					}
+					new CommandResultBuilder().success().build()
+				}).orElse(_ -> {
+					event.getChannel().sendMessage("Must be in a voice chat to pop pop")
+					new CommandResultBuilder().error().build()
 				})
-		new CommandResultBuilder().success().build()
 	}
 
 }

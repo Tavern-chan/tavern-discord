@@ -27,9 +27,17 @@ class SidesRollHandler implements CommandHandler {
 
 	@Override
 	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
-		int sides = Integer.parseInt(message.args.first())
-		int roll = rollService.rollSingle(sides)
-		event.getChannel().sendMessage("You rolled a " + roll).queue()
-		return new CommandResultBuilder().success().build()
+		try {
+			int sides = Integer.parseInt(message.args.first())
+			int roll = rollService.rollSingle(sides)
+			event.getChannel().sendMessage("You rolled a " + roll).queue()
+			return new CommandResultBuilder().success().build()
+		} catch (NumberFormatException ex) {
+			event.getChannel().sendMessage("Arguments must be numbers")
+			return new CommandResultBuilder().error().build()
+		} catch (IllegalArgumentException ex) {
+			event.getChannel().sendMessage(ex.getMessage())
+			return new CommandResultBuilder().error().build()
+		}
 	}
 }

@@ -31,15 +31,23 @@ class AmountAndSidesRollHandler implements CommandHandler {
 
 	@Override
 	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
-		int amount = Integer.parseInt(message.args.first())
-		int sides = Integer.parseInt(message.args.last())
+		try {
+			int amount = Integer.parseInt(message.args.first())
+			int sides = Integer.parseInt(message.args.last())
 
-		List<Integer> rolls = rollService.roll(amount, sides)
-		StringJoiner joiner = new StringJoiner('+')
-		rolls.forEach({roll -> joiner.add(" ${roll} ")})
-		String result = "You rolled: ${joiner.toString()} = ${rolls.stream().reduce(0, Integer::sum)}"
-		event.getChannel().sendMessage(result).queue({-> logger.trace('Sent default roll result')}, {-> logger.error('Failed to send default roll result')})
-		return new CommandResultBuilder().success().build()
+			List<Integer> rolls = rollService.roll(amount, sides)
+			StringJoiner joiner = new StringJoiner('+')
+			rolls.forEach({roll -> joiner.add(" ${roll} ")})
+			String result = "You rolled: ${joiner.toString()} = ${rolls.stream().reduce(0, Integer::sum)}"
+			event.getChannel().sendMessage(result).queue({-> logger.trace('Sent default roll result')}, {-> logger.error('Failed to send default roll result')})
+			return new CommandResultBuilder().success().build()
+		} catch (NumberFormatException ex) {
+			event.getChannel().sendMessage("Arguments must be numbers")
+			return new CommandResultBuilder().error().build()
+		} catch (IllegalArgumentException ex) {
+			event.getChannel().sendMessage(ex.getMessage())
+			return new CommandResultBuilder().error().build()
+		}
 	}
 
 }
