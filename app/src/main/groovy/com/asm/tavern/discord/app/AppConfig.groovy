@@ -15,4 +15,8 @@ class AppConfig {
 		properties.getProperty('discordToken')
 	}
 
+	String getPrefix() {
+		properties.getProperty('command.prefix')
+	}
+
 }

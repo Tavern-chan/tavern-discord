@@ -34,7 +34,6 @@ import org.springframework.context.support.GenericApplicationContext
 
 class App {
 	private static final XLogger logger = XLoggerFactory.getXLogger(App.class)
-	private static final String PREFIX = '$'
 
     static void main(String[] args) {
 		logger.info("Starting up")
@@ -49,7 +48,7 @@ class App {
 
 		logger.info("Initializing Discord API")
 		CommandHandlerRegistry commandHandlerRegistry = new CommandHandlerRegistry()
-		CommandParser commandParser = new CommandParser(PREFIX, TavernCommands.getCommands())
+		CommandParser commandParser = new CommandParser(appConfig.getPrefix(), TavernCommands.getCommands())
 		Discord discord = new Discord(appConfig.getDiscordToken(), commandParser, commandHandlerRegistry)
 
 		logger.info("Initializing application context")
