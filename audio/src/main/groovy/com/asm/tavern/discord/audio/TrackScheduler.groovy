@@ -7,10 +7,11 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason
 
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
+import java.util.stream.Collectors
 
 class TrackScheduler extends AudioEventAdapter {
 	private final AudioPlayer player
-	private final BlockingQueue<AudioTrack> queue
+	private BlockingQueue<AudioTrack> queue
 
 	/**
 	 * @param player The audio player this scheduler uses
@@ -44,8 +45,6 @@ class TrackScheduler extends AudioEventAdapter {
 	}
 
 	void skip(int amount) {
-		// TODO: this seems like a dumb implementation
-		// Remove one less than the amount since the first is the current song
 		(1..<amount).forEach({ _ -> queue.poll()})
 		nextTrack()
 	}
@@ -65,6 +64,16 @@ class TrackScheduler extends AudioEventAdapter {
 
 	void unpause() {
 		player.setPaused(false)
+	}
+
+	void shuffle() {
+		// Shuffle and reconstruct the Queue
+		BlockingQueue<AudioTrack> shuffledQueue = new LinkedBlockingQueue<>();
+		List<AudioTrack> songList = queue.toList()
+		Collections.shuffle(songList)
+		songList.forEach(shuffledQueue::add)
+
+		this.queue = shuffledQueue
 	}
 
 	BlockingQueue<AudioTrack> getQueue() {

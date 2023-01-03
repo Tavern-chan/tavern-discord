@@ -168,4 +168,9 @@ class LavaPlayerAudioService implements AudioService {
 				.map(ActiveAudioTrackAdapter::new)
 				.orElse(null)
 	}
+
+	@Override
+	void shuffle(GuildId guildId) {
+		musicManagers.get(guildId).getScheduler().shuffle()
+	}
 }

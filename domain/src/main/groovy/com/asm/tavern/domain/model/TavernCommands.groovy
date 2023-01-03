@@ -113,6 +113,11 @@ class TavernCommands {
 			.add(usage('skip amount', 'Skip an amount of songs').add(argument('amount', 'The amount of songs to skip').example('5')))
 			.build()
 
+	static final Command SHUFFLE = command('shuffle', 'Shuffle the current song queue')
+			.tag(Tags.MUSIC)
+			.add(usage('default', 'Shuffle the current song queue'))
+			.build()
+
 	static final Command PAUSE = command('pause', 'Pause the music')
 			.tag(Tags.MUSIC)
 			.add(usage('default', 'Pause the music'))

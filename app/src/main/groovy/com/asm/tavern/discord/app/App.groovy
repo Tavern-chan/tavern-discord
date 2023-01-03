@@ -103,6 +103,7 @@ class App {
 			.add(new DrinkCommandHandler(drinkService))
 			.add(new PopPopCommandHandler(drinkService))
 			.add(new DrinksCommandHandler(drinkService))
+			.add(new ShuffleQueueCommandHandler(audioService))
 
 		discord.start()
     }

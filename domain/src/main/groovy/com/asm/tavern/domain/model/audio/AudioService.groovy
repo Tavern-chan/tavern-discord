@@ -27,6 +27,8 @@ interface AudioService {
 
 	void unpause(GuildId guildId)
 
+	void shuffle(GuildId guildId)
+
 	List<AudioTrackInfo> getQueue(GuildId guildId)
 
 	ActiveAudioTrack getNowPlaying(GuildId guildId)
