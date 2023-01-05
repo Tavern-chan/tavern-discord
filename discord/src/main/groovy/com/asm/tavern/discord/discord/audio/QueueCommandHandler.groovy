@@ -10,6 +10,8 @@ import com.asm.tavern.domain.model.discord.GuildId
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import org.slf4j.ext.XLogger
 import org.slf4j.ext.XLoggerFactory
+import java.time.Duration
+import java.util.function.Function
 
 import javax.annotation.Nonnull
 
@@ -38,21 +40,32 @@ class QueueCommandHandler implements CommandHandler {
 		if (!queue.isEmpty()) {
 			int songIndex = 1
 			int maxOutput = 20
+			Duration totalDuration = Duration.ZERO
+
+			Function<Duration, String> formatTime = (Duration duration) -> {
+				String.format("%d:%2d", (duration.getSeconds()/60).intValue(), (duration.getSeconds()%60).intValue()).replace(" ", "0")
+			}
+
 			queue.stream()
-					.limit(maxOutput)
 					.collect(StreamChunkCollector.take(10)).forEach({ tracks ->
 				StringBuilder builder = new StringBuilder()
-				tracks.forEach({ track -> builder.append("${songIndex++}. ")
-						.append(track.title)
-						.append(" - ")
-						.append(DiscordUtils.escapeUrl(track.url.toString()))
-						.append("\n")
+				tracks.forEach( {track ->
+						if(songIndex <= maxOutput){
+							builder.append("${songIndex++}. ")
+									.append(track.title)
+									.append(" - ")
+									.append(DiscordUtils.escapeUrl(track.url.toString()))
+									.append("\n")
+						}
+					totalDuration += track.duration
 				})
-				event.getChannel().sendMessage(builder.toString()).queue()
+				if(!builder.isBlank())
+					event.getChannel().sendMessage(builder.toString()).queue()
 			})
 			if (queue.size() > maxOutput) {
 				event.getChannel().sendMessage("+${queue.size() - maxOutput} more").queue()
 			}
+			event.getChannel().sendMessage("Remaining Duration: ${formatTime(totalDuration)}").queue()
 		}
 		new CommandResultBuilder().success().build()
 	}
