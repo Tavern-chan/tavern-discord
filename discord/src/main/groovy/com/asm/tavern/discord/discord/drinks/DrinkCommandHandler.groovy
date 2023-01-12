@@ -7,7 +7,8 @@ import com.asm.tavern.domain.model.discord.Mention
 import com.asm.tavern.domain.model.drinks.DrinkService
 import com.asm.tavern.domain.model.drinks.MemberDrinkResult
 import net.dv8tion.jda.api.entities.Member
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 import javax.annotation.Nonnull
 import java.util.stream.Collectors
@@ -30,7 +31,17 @@ class DrinkCommandHandler implements CommandHandler {
 	}
 
 	@Override
-	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
+	CommandResult handle(@Nonnull MessageReceivedEvent event, CommandMessage message) {
+		List<Member> members = DiscordUtils.getUsersVoiceChannel(event.getJDA(), event.getAuthor().id)
+				.map(channel -> channel.getMembers())
+				.orElse([])
+		List<MemberDrinkResult> results = drinkService.drink(event.getMember(), members)
+		event.getChannel().sendMessage(String.join("\n", results.stream().map(result -> "${new Mention(result.member.id)} take ${result.drinks} drinks!").collect(Collectors.toList()))).queue()
+		new CommandResultBuilder().success().build()
+	}
+
+	@Override
+	CommandResult handle(@Nonnull SlashCommandInteractionEvent event, CommandMessage message) {
 		List<Member> members = DiscordUtils.getUsersVoiceChannel(event.getJDA(), event.getAuthor().id)
 				.map(channel -> channel.getMembers())
 				.orElse([])

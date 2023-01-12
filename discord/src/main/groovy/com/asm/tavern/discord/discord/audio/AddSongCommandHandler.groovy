@@ -4,7 +4,8 @@ import com.asm.tavern.domain.model.TavernCommands
 import com.asm.tavern.domain.model.audio.SongId
 import com.asm.tavern.domain.model.audio.SongService
 import com.asm.tavern.domain.model.command.*
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 import javax.annotation.Nonnull
 
@@ -26,7 +27,16 @@ class AddSongCommandHandler implements CommandHandler {
 	}
 
 	@Override
-	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
+	CommandResult handle(@Nonnull MessageReceivedEvent event, CommandMessage message) {
+		String id = message.args[0]
+		String uri = message.args[1]
+		songService.register(new SongId(id), new URI(uri))
+		event.getChannel().sendMessage("Registered new song ${id}").queue()
+		new CommandResultBuilder().success().build()
+	}
+
+	@Override
+	CommandResult handle(@Nonnull SlashCommandInteractionEvent event, CommandMessage message) {
 		String id = message.args[0]
 		String uri = message.args[1]
 		songService.register(new SongId(id), new URI(uri))

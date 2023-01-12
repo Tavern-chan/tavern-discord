@@ -31,7 +31,7 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-beans', version: '5.3.3'
 
     // Discord JDS API
-    compile 'net.dv8tion:JDA:4.2.0_194'
+    compile 'net.dv8tion:JDA:5.0.0-beta.2'
 
     // Logging
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'

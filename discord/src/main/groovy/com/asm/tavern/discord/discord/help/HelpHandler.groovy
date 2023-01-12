@@ -9,7 +9,8 @@ import com.asm.tavern.domain.model.command.CommandResult
 import com.asm.tavern.domain.model.command.CommandResultBuilder
 import com.asm.tavern.domain.model.help.CommandIniPrinter
 import net.dv8tion.jda.api.entities.Message
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 import javax.annotation.Nonnull
 
@@ -31,9 +32,14 @@ class HelpHandler implements CommandHandler {
 	}
 
 	@Override
-	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
+	CommandResult handle(@Nonnull MessageReceivedEvent event, CommandMessage message) {
 		event.getChannel().sendMessage(new CommandIniPrinter().print(prefix, TavernCommands.getCommands())).queue()
 		return new CommandResultBuilder().success().build()
 	}
 
+	@Override
+	CommandResult handle(@Nonnull SlashCommandInteractionEvent event, CommandMessage message) {
+		event.getChannel().sendMessage(new CommandIniPrinter().print(prefix, TavernCommands.getCommands())).queue()
+		return new CommandResultBuilder().success().build()
+	}
 }

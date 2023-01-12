@@ -4,7 +4,7 @@ import com.asm.tavern.domain.model.discord.GuildId
 import com.asm.tavern.domain.model.discord.VoiceChannelId
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.GuildVoiceState
-import net.dv8tion.jda.api.entities.TextChannel
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel
 import net.dv8tion.jda.api.managers.AudioManager
 
 interface AudioService {

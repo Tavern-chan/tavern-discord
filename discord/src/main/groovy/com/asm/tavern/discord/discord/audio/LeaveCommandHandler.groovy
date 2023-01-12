@@ -4,7 +4,8 @@ package com.asm.tavern.discord.discord.audio
 import com.asm.tavern.domain.model.TavernCommands
 import com.asm.tavern.domain.model.audio.AudioService
 import com.asm.tavern.domain.model.command.*
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 import javax.annotation.Nonnull
 
@@ -26,7 +27,13 @@ class LeaveCommandHandler implements CommandHandler {
 	}
 
 	@Override
-	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
+	CommandResult handle(@Nonnull MessageReceivedEvent event, CommandMessage message) {
+		audioService.leave(event.getGuild())
+		new CommandResultBuilder().success().build()
+	}
+
+	@Override
+	CommandResult handle(@Nonnull SlashCommandInteractionEvent event, CommandMessage message) {
 		audioService.leave(event.getGuild())
 		new CommandResultBuilder().success().build()
 	}

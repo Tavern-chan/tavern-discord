@@ -8,7 +8,8 @@ import com.asm.tavern.domain.model.command.CommandHandler
 import com.asm.tavern.domain.model.command.CommandMessage
 import com.asm.tavern.domain.model.command.CommandResult
 import com.asm.tavern.domain.model.discord.GuildId
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 import javax.annotation.Nonnull
 
@@ -30,7 +31,13 @@ class ShuffleQueueCommandHandler implements CommandHandler {
     }
 
     @Override
-    CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
+    CommandResult handle(@Nonnull MessageReceivedEvent event, CommandMessage message) {
+        audioService.shuffle(new GuildId(event.guild.id))
+        event.getChannel().sendMessage("Shuffled the queue!").queue()
+    }
+
+    @Override
+    CommandResult handle(@Nonnull SlashCommandInteractionEvent event, CommandMessage message) {
         audioService.shuffle(new GuildId(event.guild.id))
         event.getChannel().sendMessage("Shuffled the queue!").queue()
     }

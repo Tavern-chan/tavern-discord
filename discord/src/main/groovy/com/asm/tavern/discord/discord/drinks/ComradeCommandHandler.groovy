@@ -11,7 +11,8 @@ import com.asm.tavern.domain.model.command.CommandResultBuilder
 import com.asm.tavern.domain.model.drinks.ComradeService
 import net.dv8tion.jda.api.entities.EmbedType
 import net.dv8tion.jda.api.entities.MessageEmbed
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 import javax.annotation.Nonnull
 import java.time.OffsetDateTime
@@ -36,7 +37,7 @@ class ComradeCommandHandler implements CommandHandler {
 	}
 
 	@Override
-	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
+	CommandResult handle(@Nonnull MessageReceivedEvent event, CommandMessage message) {
 		comradeService.enable()
 		MessageEmbed embeddedImage = new MessageEmbed(
 				"https://media3.giphy.com/media/befaYZCgtZfZm/giphy.gif",
@@ -52,11 +53,34 @@ class ComradeCommandHandler implements CommandHandler {
 				null,
 				new MessageEmbed.ImageInfo("https://media3.giphy.com/media/befaYZCgtZfZm/giphy.gif", "https://media3.giphy.com/media/befaYZCgtZfZm/giphy.gif", 400, 300),
 				null)
-		event.getChannel().sendMessage(embeddedImage).queue()
+		event.getChannel().sendMessageEmbeds(embeddedImage).queue()
 		event.getGuild().getSelfMember().modifyNickname("Comrade Bot").submit()
 		audioService.join(event.getMember().getVoiceState(), event.getGuild().getAudioManager())
-		audioService.play(event.getChannel(), URI.create("https://www.youtube.com/watch?v=bCBJ-MaUTC4&ab_channel=ChornyyBaron"))
+		audioService.play(event.getChannel().asTextChannel(), URI.create("https://www.youtube.com/watch?v=bCBJ-MaUTC4&ab_channel=ChornyyBaron"))
 		new CommandResultBuilder().success().build()
 	}
 
+	@Override
+	CommandResult handle(@Nonnull SlashCommandInteractionEvent event, CommandMessage message) {
+		comradeService.enable()
+		MessageEmbed embeddedImage = new MessageEmbed(
+				"https://media3.giphy.com/media/befaYZCgtZfZm/giphy.gif",
+				"Comrades",
+				"Comrades",
+				EmbedType.IMAGE,
+				OffsetDateTime.now(),
+				0xFF0000,
+				null,
+				new MessageEmbed.Provider("Giphy", "https://giphy.com/"),
+				null,
+				null,
+				null,
+				new MessageEmbed.ImageInfo("https://media3.giphy.com/media/befaYZCgtZfZm/giphy.gif", "https://media3.giphy.com/media/befaYZCgtZfZm/giphy.gif", 400, 300),
+				null)
+		event.getChannel().sendMessageEmbeds(embeddedImage).queue()
+		event.getGuild().getSelfMember().modifyNickname("Comrade Bot").submit()
+		audioService.join(event.getMember().getVoiceState(), event.getGuild().getAudioManager())
+		audioService.play(event.getChannel().asTextChannel(), URI.create("https://www.youtube.com/watch?v=bCBJ-MaUTC4&ab_channel=ChornyyBaron"))
+		new CommandResultBuilder().success().build()
+	}
 }

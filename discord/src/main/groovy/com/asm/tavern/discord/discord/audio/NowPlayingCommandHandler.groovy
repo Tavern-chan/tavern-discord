@@ -8,7 +8,8 @@ import com.asm.tavern.domain.model.command.*
 import com.asm.tavern.domain.model.discord.GuildId
 import net.dv8tion.jda.api.entities.EmbedType
 import net.dv8tion.jda.api.entities.MessageEmbed
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 import javax.annotation.Nonnull
 import java.time.Duration
@@ -32,7 +33,7 @@ class NowPlayingCommandHandler implements CommandHandler {
 	}
 
 	@Override
-	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
+	CommandResult handle(@Nonnull MessageReceivedEvent event, CommandMessage message) {
 		ActiveAudioTrack track = audioService.getNowPlaying(new GuildId(event.getGuild().getId()))
 
 		Function<Duration, String> formatTime = (Duration duration) -> {
@@ -40,7 +41,34 @@ class NowPlayingCommandHandler implements CommandHandler {
 		}
 
 		if (track) {
-			event.getChannel().sendMessage(new MessageEmbed(
+			event.getChannel().sendMessageEmbeds(new MessageEmbed(
+					track.info.url.toString(),
+					track.info.title,
+					track.info.isStream() ? "Streaming" : "${formatTime(track.currentTime)}/${formatTime(track.info.duration)}",
+					EmbedType.VIDEO,
+					null,
+					0,
+					null,
+					null,
+					new MessageEmbed.AuthorInfo(track.info.author, null, null, null),
+					new MessageEmbed.VideoInfo(track.info.url.toString(), 400, 300),
+					null,
+					null,
+					null)).queue()
+		}
+		new CommandResultBuilder().success().build()
+	}
+
+	@Override
+	CommandResult handle(@Nonnull SlashCommandInteractionEvent event, CommandMessage message) {
+		ActiveAudioTrack track = audioService.getNowPlaying(new GuildId(event.getGuild().getId()))
+
+		Function<Duration, String> formatTime = (Duration duration) -> {
+			String.format("%d:%2d", (duration.getSeconds()/60).intValue(), (duration.getSeconds()%60).intValue()).replace(" ", "0")
+		}
+
+		if (track) {
+			event.getChannel().sendMessageEmbeds(new MessageEmbed(
 					track.info.url.toString(),
 					track.info.title,
 					track.info.isStream() ? "Streaming" : "${formatTime(track.currentTime)}/${formatTime(track.info.duration)}",
