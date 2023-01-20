@@ -148,6 +148,7 @@ class TavernCommands {
 		static final Command ADD = command('add', 'Register a new song').add(usage('add', 'Register a new song')
 				.add(argument('id', 'The id to register the song as').example('chuchu'))
 				.add(argument('url', 'The url of the song to register').example('https://www.youtube.com/watch?v=5d32-RnUlAA'))
+				.add(argument('category', 'The category of the song to register').example('powerhour'))
 				.requireRole(Roles.DJ))
 				.build()
 

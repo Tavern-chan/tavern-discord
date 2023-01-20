@@ -17,9 +17,9 @@ class SongService {
 		songRegistry
 	}
 
-	Song register(SongId songId, URI songUrl) {
+	Song register(SongId songId, URI songUrl, String category="uncategorized") {
 		logger.info("Adding new song ${songId.id} : ${songUrl}")
-		Song song = new Song(songId, songUrl)
+		Song song = new Song(songId, songUrl, category)
 		songRegistry.add(song)
 		song
 	}
