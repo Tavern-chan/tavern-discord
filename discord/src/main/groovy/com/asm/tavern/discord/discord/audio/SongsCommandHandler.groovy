@@ -30,7 +30,7 @@ class SongsCommandHandler implements CommandHandler {
 
 	@Override
 	boolean supportsUsage(CommandArgumentUsage usage) {
-		true
+		TavernCommands.SongsUsages.DEFAULT == usage
 	}
 
 	@Override

@@ -144,26 +144,53 @@ class TavernCommands {
 			.add(usage('default', 'Leave the voice chat lobby'))
 			.build()
 
-	static class SongSubCommands {
-		static final Command ADD = command('add', 'Register a new song').add(usage('add', 'Register a new song')
+	static class SongsUsages {
+		static final CommandArgumentUsage DEFAULT = usage('default', 'List songs').build()
+		static final CommandArgumentUsage ADD_WITH_CATEGORY = usage('add ', 'Register a new song with category')
 				.add(argument('id', 'The id to register the song as').example('chuchu'))
 				.add(argument('url', 'The url of the song to register').example('https://www.youtube.com/watch?v=5d32-RnUlAA'))
 				.add(argument('category', 'The category of the song to register').example('powerhour'))
-				.requireRole(Roles.DJ))
+				.requireRole(Roles.DJ)
 				.build()
 
-		static final Command REMOVE = command('remove', 'Remove a registered song')
-				.add(usage('remove', 'Remove a registered song')
-				.add(argument('id', 'The id of the song to remove').example('gooba2'))
-				.requireRole(Roles.DJ))
+		static final CommandArgumentUsage ADD = usage('add', 'Register a new song')
+				.add(argument('id', 'The id to register the song as').example('chuchu'))
+				.add(argument('url', 'The url of the song to register').example('https://www.youtube.com/watch?v=5d32-RnUlAA'))
+				.requireRole(Roles.DJ)
+				.build()
+
+		static final CommandArgumentUsage REMOVE = usage('remove', 'Remove a registered song')
+				.add(argument('id', 'The id of the song to remove').example('chchu'))
+				.requireRole(Roles.DJ)
 				.build()
 	}
 
 	static final Command SONGS = command('songs', 'Commands for registered songs')
 			.tag(Tags.MUSIC)
-			.add(usage('default', 'List songs'))
-			.add(SongSubCommands.ADD)
-			.add(SongSubCommands.REMOVE)
+			.add(SongsUsages.DEFAULT)
+			.add(SongsUsages.ADD)
+			.add(SongsUsages.REMOVE)
+			.add(SongsUsages.ADD_WITH_CATEGORY)
+			.usageRouter({ usages, args ->
+				switch(args.size()){
+					case 0:
+						return SongsUsages.DEFAULT
+					case 3:
+						if(args.first().toLowerCase().contains('add'))
+							return SongsUsages.ADD
+						else if(args.first().toLowerCase().contains('remove'))
+							return SongsUsages.REMOVE
+						else
+							return SongsUsages.DEFAULT
+					case 4:
+						if(args.first().toLowerCase().contains('add'))
+							return SongsUsages.ADD_WITH_CATEGORY
+						else
+							return SongsUsages.DEFAULT
+					default:
+						return SongsUsages.DEFAULT
+				}
+			})
 			.build()
 
 	static final Command COMRADE = command('comrade', 'COMRADES!')

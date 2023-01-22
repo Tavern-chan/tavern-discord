@@ -95,6 +95,7 @@ class App {
 			.add(new LeaveCommandHandler(audioService))
 			.add(new SongsCommandHandler(songService))
 			.add(new AddSongCommandHandler(songService))
+			.add(new AddSongWithCategoryCommandHandler(songService))
 			.add(new RemoveSongCommandHandler(songService))
 			.add(new QueueCommandHandler(audioService))
 			.add(new ClearCommandHandler(audioService))

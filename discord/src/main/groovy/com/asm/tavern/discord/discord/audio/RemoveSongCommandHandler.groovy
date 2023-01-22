@@ -17,12 +17,12 @@ class RemoveSongCommandHandler implements CommandHandler {
 
 	@Override
 	Command getCommand() {
-		TavernCommands.SongSubCommands.REMOVE
+		TavernCommands.SONGS
 	}
 
 	@Override
 	boolean supportsUsage(CommandArgumentUsage usage) {
-		true
+		TavernCommands.SongsUsages.REMOVE == usage
 	}
 
 	@Override
