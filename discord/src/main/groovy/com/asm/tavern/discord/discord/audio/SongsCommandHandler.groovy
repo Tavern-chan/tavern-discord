@@ -1,13 +1,11 @@
 package com.asm.tavern.discord.discord.audio
 
 import com.asm.tavern.discord.utilities.DiscordUtils
-import com.asm.tavern.discord.utilities.stream.StreamChunkCollector
 import com.asm.tavern.domain.model.TavernCommands
 import com.asm.tavern.domain.model.audio.Song
 import com.asm.tavern.domain.model.audio.SongService
 import com.asm.tavern.domain.model.command.*
-import net.dv8tion.jda.api.EmbedBuilder
-import net.dv8tion.jda.api.entities.EmbedType
+import groovy.transform.NullCheck
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 
@@ -37,11 +35,22 @@ class SongsCommandHandler implements CommandHandler {
 	CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
 		int chunkSize = 10
 		String currentCategory = ""
+
 		// Function for pushing message so message can be pushed when max chunk size to avoid discord max message length. Also empty builder when pushed
 		Function<StringBuilder, String> pushMessage = (StringBuilder builder) -> {
 			event.getChannel().sendMessage(new MessageEmbed(null, "${currentCategory} Songs", builder.toString(), null, null, 0xFF0000, null, null, null, null, null,null, null)).queue()
 			builder.setLength(0)
 		}
+
+        //Only needs to be ran once on upgrade, then can be removed.
+		/**
+        for(song in songService.getSongRegistry().getAll()){
+            if(song.category == null)
+				// if song category is missing, reregister the song which will autofill category with uncategorized fixing nulls
+                songService.register(song.id, song.uri)
+        }
+	 	**/
+
 
 		StreamSupport.stream(songService.getSongRegistry().getAll().spliterator(), false)
 				.sorted(Comparator.comparing((Song song) -> song.id.id))

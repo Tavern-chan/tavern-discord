@@ -27,9 +27,9 @@ class AddSongWithCategoryCommandHandler implements CommandHandler {
 
     @Override
     CommandResult handle(@Nonnull GuildMessageReceivedEvent event, CommandMessage message) {
-        String id = message.args[0]
-        String uri = message.args[1]
-        String category = message.args[2]
+        String id = message.args[1]
+        String uri = message.args[2]
+        String category = message.args[3]
 
         songService.register(new SongId(id), new URI(uri), category)
         event.getChannel().sendMessage("Registered new song ${id} under category: ${category}").queue()

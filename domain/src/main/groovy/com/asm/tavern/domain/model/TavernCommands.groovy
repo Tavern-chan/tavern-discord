@@ -175,11 +175,14 @@ class TavernCommands {
 				switch(args.size()){
 					case 0:
 						return SongsUsages.DEFAULT
+					case 2:
+						if(args.first().toLowerCase().contains('remove'))
+							return SongsUsages.REMOVE
+						else
+							return SongsUsages.DEFAULT
 					case 3:
 						if(args.first().toLowerCase().contains('add'))
 							return SongsUsages.ADD
-						else if(args.first().toLowerCase().contains('remove'))
-							return SongsUsages.REMOVE
 						else
 							return SongsUsages.DEFAULT
 					case 4:
