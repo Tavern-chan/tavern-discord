@@ -5,7 +5,6 @@ import com.asm.tavern.domain.model.TavernCommands
 import com.asm.tavern.domain.model.audio.Song
 import com.asm.tavern.domain.model.audio.SongService
 import com.asm.tavern.domain.model.command.*
-import groovy.transform.NullCheck
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 
