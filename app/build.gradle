@@ -9,6 +9,8 @@ plugins {
 version = '1.0.0'
 description = 'Tavern discord integration'
 
+def mainClass = 'com.asm.tavern.discord.app.App'
+
 dependencies {
     implementation project(':utilities')
     implementation project(':discord')
@@ -20,5 +22,29 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'com.asm.tavern.discord.app.App'
+    mainClassName = mainClass
+
 }
+
+jar {
+	baseName = 'tavern'
+
+	manifest {
+		attributes 'Main-Class': mainClass
+	}
+
+}
+
+task fatJar(type: Jar) {
+    baseName = 'tavern-prod'
+
+    manifest {
+        attributes 'Main-Class': mainClass
+    }
+
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+    with jar
+}
+
