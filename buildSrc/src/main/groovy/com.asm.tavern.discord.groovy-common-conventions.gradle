@@ -29,6 +29,11 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-context', version: '5.3.3'
     compile group: 'org.springframework', name: 'spring-core', version: '5.3.3'
     compile group: 'org.springframework', name: 'spring-beans', version: '5.3.3'
+    compile group: 'io.spring.dependency-management', name: 'io.spring.dependency-management.gradle.plugin', version: '1.0.15.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.7.10'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jooq', version: '2.7.1'
+    compile group: 'org.jooq', name: 'jooq', version: '3.15.0'
+    compile group: 'org.json', name: 'json', version: '20220924'
 
     // Discord JDS API
     compile 'net.dv8tion:JDA:5.0.0-beta.6'
@@ -50,6 +55,13 @@ dependencies {
     testRuntime "net.bytebuddy:byte-buddy:1.10.10" // allows mocking of classes (in addition to interfaces)
     testRuntime "org.objenesis:objenesis:3.1"      // allows mocking of classes without default constructor (together with ByteBuddy or CGLIB)
 
+}
+
+configurations {
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+
+    }
 }
 
 // tasks.named('test') {

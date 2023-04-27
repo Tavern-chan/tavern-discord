@@ -26,4 +26,16 @@ class AppConfig {
 	String getPrefix() {
 		properties.getProperty('command.prefix')
 	}
+
+	String getDiscordClientId() {
+		properties.getProperty('discordClientId')
+	}
+
+	String getRedirectURI() {
+		properties.getProperty('redirectURI')
+	}
+
+	String getDiscordClientSecret() {
+		properties.getProperty('discordClientSecret')
+	}
 }

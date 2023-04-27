@@ -7,6 +7,11 @@ import com.asm.tavern.domain.model.command.CommandHandlerRegistry
 import com.asm.tavern.domain.model.command.CommandMessage
 import com.asm.tavern.domain.model.discord.GuildId
 import com.asm.tavern.domain.model.discord.VoiceChannelId
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
@@ -26,6 +31,23 @@ class DiscordListener extends ListenerAdapter {
 	DiscordListener(CommandParser parser, CommandHandlerRegistry commandHandlerRegistry) {
 		this.commandHandlerRegistry = commandHandlerRegistry
 		this.parser = parser
+	}
+
+
+	//MessageChannelUnion messageChannelUnion, GuildId guildId, CommandMessage message
+	// First two derived from user.
+	String onApiCallReceived(TextChannel textChannel = null, Guild guild, Member member, String message) {
+		CommandMessage result = parser.parse(parser.prefix + message)
+		CommandHandler handler = commandHandlerRegistry.getHandler(result)
+
+
+		if (handler) {
+			if (!handler.handle(textChannel, guild, member,  result)) {
+				logger.error("Failed to handle command ${parser.prefix}${result.getCommandString()}")
+			}
+		} else {
+			logger.warn("No handler for command {} with usage {}", result.commandList.last().name, result.usage.name)
+		}
 	}
 
 	@Override

@@ -6,8 +6,8 @@ dependencies {
     implementation project(':utilities')
     implementation project(':domain')
 
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.1'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.1'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.12.1'
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.12.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.12.1'
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.12.1'
 }

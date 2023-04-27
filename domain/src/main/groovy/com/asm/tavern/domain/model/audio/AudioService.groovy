@@ -2,6 +2,7 @@ package com.asm.tavern.domain.model.audio
 
 import com.asm.tavern.domain.model.discord.GuildId
 import com.asm.tavern.domain.model.discord.VoiceChannelId
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.GuildVoiceState
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel
@@ -35,10 +36,24 @@ interface AudioService {
 
 	void playNext(TextChannel textChannel, String searchString)
 
+	void setWeaveAudio(String searchString)
+
+	void setWeaveAudio(URI song)
+
+	void setCategory(String category)
+
+	void clearPlayMode()
+
+	void forcePlay(GuildId guildId)
+
 	List<AudioTrackInfo> getQueue(GuildId guildId)
 
 	ActiveAudioTrack getNowPlaying(GuildId guildId)
 
 	boolean getIsPaused(GuildId guildId)
+
+	AudioTrack getAudioTrack(String searchString)
+
+	AudioTrack getAudioTrack(URI uri)
 
 }

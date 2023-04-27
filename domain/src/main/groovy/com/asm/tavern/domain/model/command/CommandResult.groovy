@@ -9,4 +9,9 @@ interface CommandResult {
 	 */
 	boolean success()
 
+	/**
+	 * @return Message to be returned with result
+	 */
+	String resultMessage()
+
 }

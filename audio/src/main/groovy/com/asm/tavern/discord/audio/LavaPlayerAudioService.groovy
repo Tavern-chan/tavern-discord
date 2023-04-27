@@ -26,10 +26,12 @@ class LavaPlayerAudioService implements AudioService {
 	private final AudioPlayerManager playerManager = new DefaultAudioPlayerManager()
 	private final Map<GuildId, GuildMusicManager> musicManagers = new HashMap<>()
 	private final YOUTUBE_SEARCH_PREFIX = "ytsearch:"
+	private final ModeService modeService
 
-	LavaPlayerAudioService() {
+	LavaPlayerAudioService(ModeService modeService) {
 		AudioSourceManagers.registerRemoteSources(playerManager)
 		AudioSourceManagers.registerLocalSource(playerManager)
+		this.modeService = modeService
 	}
 
 	@Override
@@ -37,6 +39,7 @@ class LavaPlayerAudioService implements AudioService {
 		if (null != voiceState && null != voiceState.getChannel()) {
 			audioManager.openAudioConnection(voiceState.getChannel())
 			getGuildAudioPlayer(voiceState).voiceChannelId = new VoiceChannelId(voiceState.getChannel().getId())
+			getGuildAudioPlayer(voiceState).scheduler.modeService = this.modeService
 		}
 	}
 
@@ -348,4 +351,94 @@ class LavaPlayerAudioService implements AudioService {
     boolean getIsPaused(GuildId guildId) {
         musicManagers.get(guildId).getScheduler().getIsPaused()
     }
+
+	@Override
+	AudioTrack getAudioTrack(String searchString) {
+		AudioTrack audioTrack
+		playerManager.loadItem(YOUTUBE_SEARCH_PREFIX + searchString, new AudioLoadResultHandler() {
+			@Override
+			void trackLoaded(AudioTrack track) {
+				audioTrack = track
+			}
+
+			@Override
+			void playlistLoaded(AudioPlaylist playlist) {
+				audioTrack = playlist.getSelectedTrack()
+
+				if (audioTrack == null) {
+					audioTrack = playlist.getTracks().first()
+				}
+
+			}
+
+			@Override
+			void noMatches() {
+
+			}
+
+			@Override
+			void loadFailed(FriendlyException exception) {
+
+			}
+		}).get()
+		return audioTrack
+	}
+
+	@Override
+	AudioTrack getAudioTrack(URI uri) {
+		AudioTrack audioTrack
+		playerManager.loadItem(uri.toString(), new AudioLoadResultHandler() {
+			@Override
+			void trackLoaded(AudioTrack track) {
+				audioTrack = track
+			}
+
+			@Override
+			void playlistLoaded(AudioPlaylist playlist) {
+				audioTrack = playlist.getSelectedTrack()
+
+				if (audioTrack == null) {
+					audioTrack = playlist.getTracks().first()
+				}
+
+			}
+
+			@Override
+			void noMatches() {
+
+			}
+
+			@Override
+			void loadFailed(FriendlyException exception) {
+
+			}
+		}).get()
+		return audioTrack
+	}
+
+	@Override
+	void setWeaveAudio(URI uri) {
+		modeService.setWeave(getAudioTrack(uri))
+	}
+
+	@Override
+	void setCategory(String category) {
+		modeService.setCategory(category, this)
+	}
+
+	@Override
+	void setWeaveAudio(String searchString) {
+		modeService.setWeave(getAudioTrack(searchString))
+	}
+
+	@Override
+	void clearPlayMode(){
+		modeService.defaultMode()
+	}
+
+    @Override
+    void forcePlay(GuildId guildId){
+        musicManagers.get(guildId).getScheduler().nextTrack()
+    }
+
 }

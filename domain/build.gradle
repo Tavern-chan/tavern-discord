@@ -5,4 +5,5 @@ plugins {
 dependencies {
     implementation project(':utilities')
     implementation 'org.json:json:20220924'
+    implementation 'com.github.walkyst:lavaplayer-fork:1.4.0'
 }

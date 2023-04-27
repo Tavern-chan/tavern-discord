@@ -42,7 +42,7 @@ class PlayNextCommandHandler implements CommandHandler {
                         .forEach(song -> audioService.playNext(event.getChannel().asTextChannel(), song.id.toString()))
 
             }, () -> {
-                event.getChannel().sendMessage("Could not retrieve spotify songs from ${songId}")
+                event.getChannel().sendMessage("Could not retrieve spotify songs from ${songId}").queue()
             })
         }
         else{

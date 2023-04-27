@@ -88,6 +88,21 @@ class TavernCommands {
 				.add(argument('song', 'the youtube url or song id').example("https://www.youtube.com/watch?v=dQw4w9WgXcQ")))
 			.build()
 
+	static final Command WEAVE = command('weave', 'Sets tavern to weave mode for a given song')
+			.tag(Tags.MUSIC)
+			.add(usage('default', 'Turns off Weave Mode'))
+			.add(usage('song', 'Song to be weaved into the queue')
+					.varArgs()
+					.add(argument('song', 'the youtube url or song id').example("https://www.youtube.com/watch?v=dQw4w9WgXcQ")))
+			.build()
+
+	static final Command PLAY_MODE = command('pm', 'Sets tavern to play mode for given category')
+			.tag(Tags.MUSIC)
+			.add(usage('default', 'Turns off modes'))
+			.add(usage('category', 'Category to be shuffled at the end of the queue')
+					.add(argument('category', 'the category string').example('elevator')))
+			.build()
+
 	static final Command NOW_PLAYING = command('np', 'Get the current playing track')
 			.tag(Tags.MUSIC)
 			.add(usage('default', 'Get the current playing track'))
@@ -111,7 +126,8 @@ class TavernCommands {
 	static final Command SKIP = command('skip', 'Skip the current track')
 			.tag(Tags.MUSIC)
 			.add(usage('default', 'Skip the current track'))
-			.add(usage('skip amount', 'Skip an amount of songs').add(argument('amount', 'The amount of songs to skip').example('5')))
+			.add(usage('skip amount', 'Skip an amount of songs')
+					.add(argument('amount', 'The amount of songs to skip').example('5')))
 			.build()
 
 	static final Command SHUFFLE = command('shuffle', 'Shuffle the current song queue')
@@ -148,21 +164,24 @@ class TavernCommands {
 
 	static class SongsUsages {
 		static final CommandArgumentUsage DEFAULT = usage('default', 'List songs').build()
-		static final CommandArgumentUsage ADD_WITH_CATEGORY = usage('add ', 'Register a new song with category')
+		static final CommandArgumentUsage ADD_WITH_CATEGORY = usage('add', 'Register a new song with category')
+				.add(argument('add', 'required').example('add'))
 				.add(argument('id', 'The id to register the song as').example('chuchu'))
 				.add(argument('url', 'The url of the song to register').example('https://www.youtube.com/watch?v=5d32-RnUlAA'))
 				.add(argument('category', 'The category of the song to register').example('powerhour'))
 				.requireRole(Roles.DJ)
 				.build()
 
-		static final CommandArgumentUsage ADD = usage('add', 'Register a new song')
+		static final CommandArgumentUsage ADD = usage('add', 'Register a new song.')
+				.add(argument('add', 'required').example('add'))
 				.add(argument('id', 'The id to register the song as').example('chuchu'))
 				.add(argument('url', 'The url of the song to register').example('https://www.youtube.com/watch?v=5d32-RnUlAA'))
 				.requireRole(Roles.DJ)
 				.build()
 
 		static final CommandArgumentUsage REMOVE = usage('remove', 'Remove a registered song')
-				.add(argument('id', 'The id of the song to remove').example('chchu'))
+				.add(argument('remove', 'required').example('remove'))
+				.add(argument('id', 'The id of the song to remove').example('chuchu'))
 				.requireRole(Roles.DJ)
 				.build()
 	}
