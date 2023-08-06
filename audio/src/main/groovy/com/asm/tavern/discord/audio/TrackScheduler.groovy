@@ -125,7 +125,7 @@ class TrackScheduler extends AudioEventAdapter {
 	void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if(endReason == AudioTrackEndReason.LOAD_FAILED){
 
-            if(retryCount < 50)
+            if(retryCount < 3)
             {
                 retryCount++
                 textChannel.sendMessage("Failure playing track: " + track.info.title + " attempting to retry. Attempt Number: " + retryCount).queue()

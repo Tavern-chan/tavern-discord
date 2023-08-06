@@ -186,7 +186,7 @@ class App {
 		discord.start()
 		this.discord = discord
 		this.appConfig = appConfig
-		TavernApiServer.start()
+		//TavernApiServer.start()
 
     }
 

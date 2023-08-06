@@ -7,6 +7,7 @@ dependencies {
     implementation project(':utilities')
     // Repo abandoned: implementation 'com.sedmelluq:lavaplayer:1.3.61'
     // Using for (walkyst) instead
-    implementation 'com.github.walkyst:lavaplayer-fork:1.4.0'
+    // walkyst moved to lavalink-devs org
+    implementation 'dev.arbjerg:lavaplayer:2.0.0'
 }
 
