@@ -35,34 +35,35 @@ distributions {
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes 'Main-Class': application.mainClass
     }
     baseName 'tavern'
-    archiveName = "${baseName}.${jar.extension}"
+    archiveFileName = "${archiveBaseName.get()}.${jar.archiveExtension.get()}"
     dependsOn configurations.runtimeClasspath
     from {
         configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
     }
-    new File(jar.destinationDir , "/Tavern-${version}").mkdir()
-    destinationDir = new File(jar.destinationDir , "/Tavern-${version}")
+    new File(jar.getDestinationDirectory().getAsFile().get(), "/Tavern-${archiveVersion.get()}").mkdir()
+    getDestinationDirectory().set(new File(jar.getDestinationDirectory().getAsFile().get() , "/Tavern-${archiveVersion.get()}"))
 
 }
 
 tasks.register("scriptDeploy", Copy) {
-    new File(jar.destinationDir, "/").mkdirs()
-    new File(jar.destinationDir , "/launchTavern.bat").text =
+    new File(jar.getDestinationDirectory().getAsFile().get(), "/").mkdirs()
+    new File(jar.getDestinationDirectory().getAsFile().get(), "/launchTavern.bat").text =
             "java -jar tavern.jar\n" +
                     "pause"
 
-    new File(jar.destinationDir, "/launchTavern.sh").text =
+    new File(jar.getDestinationDirectory().getAsFile().get(), "/launchTavern.sh").text =
             "#!/usr/bin/env bash\n" +
                     "java -jar tavern.jar\n"
 
     from("../")
     include("tavern-discord.properties")
     includeEmptyDirs = false
-    into(new File(jar.destinationDir , "/"))
+    into(new File(jar.getDestinationDirectory().getAsFile().get(), "/"))
 }
 
 tasks.named("build") { finalizedBy("scriptDeploy") }

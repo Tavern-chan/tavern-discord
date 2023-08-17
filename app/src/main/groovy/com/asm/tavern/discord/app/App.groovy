@@ -107,9 +107,13 @@ class App {
 		applicationContext.start()
 		new DomainRegistry().setApplicationContext(applicationContext)
 
+		logger.info("Grabbing Bean RollService.class")
 		RollService rollService = applicationContext.getBean(RollService.class)
+		logger.info("Grabbing Bean DrinkService.class")
 		DrinkService drinkService = applicationContext.getBean(DrinkService.class)
+		logger.info("Grabbing Bean SongService.class")
 		AudioService audioService = applicationContext.getBean(AudioService.class)
+		logger.info("Grabbing Bean AudioService.class")
 		SongService songService = applicationContext.getBean(SongService.class)
 
 		logger.info("Loading in command handlers")
