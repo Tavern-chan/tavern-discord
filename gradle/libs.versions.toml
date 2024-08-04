@@ -1,6 +1,4 @@
 [versions]
-groovy = '3.0.21'
-
 spring = '5.3.34'
 google-guava = '33.1.0-jre'
 
@@ -22,8 +20,6 @@ byteBuddy = '1.10.10'
 objenesis = '3.1'
 
 [libraries]
-groovy = { module = 'org.codehaus.groovy:groovy', version.ref = 'groovy' }
-
 # Spring
 spring-core = { module = 'org.springframework:spring-core', version.ref = 'spring' }
 spring-context = { module = 'org.springframework:spring-context', version.ref = 'spring' }
@@ -71,7 +67,6 @@ objenesis = { module = 'org.objenesis:objenesis', version.ref = 'objenesis' }
 [bundles]
 
 core = [
-    'groovy',
     'spring-core',
     'spring-beans',
     'spring-context',
