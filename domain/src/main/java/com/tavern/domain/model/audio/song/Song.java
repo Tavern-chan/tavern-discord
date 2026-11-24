@@ -1,5 +1,5 @@
 package com.tavern.domain.model.audio.song;
 
 public interface Song {
-    void play(SongPlayer player);
+    void play(SongReader player);
 }

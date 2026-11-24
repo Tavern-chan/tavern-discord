@@ -8,7 +8,11 @@ public final class YoutubeSong implements Song {
     }
 
     @Override
-    public void play(SongPlayer player) {
+    public void play(SongReader player) {
         player.play(this);
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

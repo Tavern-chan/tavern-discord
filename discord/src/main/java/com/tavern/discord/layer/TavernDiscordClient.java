@@ -1,5 +1,7 @@
 package com.tavern.discord.layer;
 
+import club.minnced.discord.jdave.interop.JDaveSessionFactory;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.tavern.discord.layer.command.slash.SlashCommandListener;
 import com.tavern.discord.layer.command.slash.TavernSlashCommandFactory;
 import com.tavern.domain.model.discord.DiscordInterface;
@@ -20,6 +22,7 @@ import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.Executors;
 import java.util.function.Predicate;
 
 import static net.dv8tion.jda.api.requests.GatewayIntent.*;
@@ -92,9 +95,11 @@ public final class TavernDiscordClient implements AutoCloseable {
                 GUILD_VOICE_STATES,
                 GUILD_MEMBERS
             ))
-//            .setAudioModuleConfig(new AudioModuleConfig().withDaveSessionFactory(
-//                new // JDaveSessionFactory()
-//            ))
+            .setActivity(Activity.customStatus("At the BAR"))
+            .setEventPool(Executors.newCachedThreadPool(new ThreadFactoryBuilder().setNameFormat("JDA Thread %d").build()))
+            .setAudioModuleConfig(new AudioModuleConfig().withDaveSessionFactory(
+                 new JDaveSessionFactory()
+            ))
             .disableCache(CacheFlag.EMOJI, CacheFlag.STICKER)
             .addEventListeners(new SlashCommandListenerAdapter(injectables, typeConverter, slashCommandCache))
             .build();

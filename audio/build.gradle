@@ -7,6 +7,7 @@ dependencies {
     implementation platform(project(':platform'))
     implementation project(':domain')
     implementation project(':utilities')
+    implementation project(':discord')
 
     implementation libs.bundles.core
     implementation libs.lavaplayer

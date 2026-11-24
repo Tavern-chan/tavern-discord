@@ -10,7 +10,7 @@ dependencies {
 
     implementation libs.bundles.core
     implementation libs.discordJda
-    // implementation libs.jdave.api
+    implementation libs.jdave.api
 
     testImplementation libs.bundles.spock
 }

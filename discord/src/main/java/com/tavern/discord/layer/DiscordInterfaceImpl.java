@@ -1,7 +1,6 @@
 package com.tavern.discord.layer;
 
-import com.tavern.domain.model.discord.ChannelId;
-import com.tavern.domain.model.discord.DiscordInterface;
+import com.tavern.domain.model.discord.*;
 import com.tavern.domain.model.guild.GuildId;
 import com.tavern.domain.model.guild.config.DrinkConfig;
 import com.tavern.domain.model.guild.config.GuildConfig;
@@ -10,11 +9,17 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.managers.AudioManager;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 public final class DiscordInterfaceImpl implements DiscordInterface {
+    private static final XLogger logger = XLoggerFactory.getXLogger(DiscordInterfaceImpl.class);
+    
     private JDA _jda;
 
     public DiscordInterfaceImpl() {}
@@ -63,4 +68,21 @@ public final class DiscordInterfaceImpl implements DiscordInterface {
         }
     }
 
+    @Override
+    public void joinVc(GuildId guildId, VoiceChannelId channelId) {
+        logger.info("Joining VC {} in guild {}", channelId, guildId);
+        Optional.ofNullable(jda().getGuildById(guildId.getId())).ifPresent(g ->
+            Optional.ofNullable(jda().getVoiceChannelById(channelId.getId())).ifPresent(vc ->
+                g.getAudioManager().openAudioConnection(vc)
+            )
+        );
+    }
+
+    @Override
+    public void leaveVc(GuildId guildId) {
+        logger.info("Leaving VC in guild {}", guildId);
+        Optional.ofNullable(jda().getGuildById(guildId.getId()))
+            .ifPresent(g -> g.getAudioManager().closeAudioConnection());
+
+    }
 }

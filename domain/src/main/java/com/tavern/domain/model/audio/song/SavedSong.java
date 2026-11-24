@@ -16,8 +16,19 @@ public final class SavedSong implements Song {
     }
 
     @Override
-    public void play(SongPlayer player) {
+    public void play(SongReader player) {
         player.play(this);
     }
 
+    public SongMetadata getMetadata() {
+        return metadata;
+    }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public Path getSongPath() {
+        return songPath;
+    }
 }
